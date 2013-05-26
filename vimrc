@@ -69,6 +69,7 @@ Bundle "camelcasemotion"
 Bundle "AutoComplPop"
 Bundle "tpope/vim-surround"
 Bundle "AutoTag"
+Bundle "tpope/vim-fugitive"
 Bundle "embear/vim-localvimrc"
 Bundle "Valloric/ListToggle"
 "Bundle "ryan-cf/netrw"
@@ -102,7 +103,7 @@ set nostartofline
 set splitbelow splitright  " New windows are created to the bottom-right.
 set timeoutlen=250  " Time to wait after ESC (default causes an annoying delay).
 set history=256  " Number of things to remember in history.
-set clipboard+=unnamed  " Enable OS clipboard integration.
+set clipboard+=unnamedplus  " Enable OS clipboard integration.
 set hidden  " The current buffer can be put to the background without writing to disk.
 set title  " Show title in app title bar.
 set ttyfast  " Fast drawing.
