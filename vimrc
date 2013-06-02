@@ -260,7 +260,7 @@ let g:easytags_file = '~/.tags'  " Default tags file.
 let g:easytags_cmd = 'ctags'
 let g:easytags_dynamic_files = 1  " Search tag files.
 let g:easytags_updatetime_warn = 0  " Don't show updatetime annoying warning.
-" let g:easytags_events = [ 'BufWritePost' ]  " Update on save only.
+let g:easytags_events = [ 'BufWritePost' ]  " Update on save only.
 "}}}
 
 " Mini Buffer Explorer {{{
