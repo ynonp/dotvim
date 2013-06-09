@@ -106,7 +106,7 @@ set nostartofline
 set splitbelow splitright  " New windows are created to the bottom-right.
 set timeoutlen=250  " Time to wait after ESC (default causes an annoying delay).
 set history=256  " Number of things to remember in history.
-set clipboard+=unnamedplus  " Enable OS clipboard integration.
+set clipboard+=unnamedplus,unnamed  " Enable OS clipboard integration.
 set hidden  " The current buffer can be put to the background without writing to disk.
 set title  " Show title in app title bar.
 set ttyfast  " Fast drawing.
@@ -299,7 +299,7 @@ let g:lt_height = 10
 " Hard-mode {{{
 " Toggle key.
 nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
-autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()  " Auto-activate hard-mode.
+" autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()  " Auto-activate hard-mode.
 "}}}
 
 " Rooter {{{
