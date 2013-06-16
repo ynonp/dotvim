@@ -218,7 +218,6 @@ let g:ycm_confirm_extra_conf = 0  " Don't ask for permission to load C-languages
 let g:ycm_autoclose_preview_window_after_insertion = 1  " Close function signature preview after exiting insert mode.
 " let g:ycm_max_diagnostics_to_display = 30  " Maximum numbers of  errors/warnings to display.
 " let g:ycm_register_as_syntastic_checker = 0  " Disable YCM-Syntastic for C-family langauges.
-let g:syntastic_mode_map = { 'mode': 'passive' }
 "}}}
 
 " Syntastic {{{
@@ -227,6 +226,7 @@ let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_auto_loc_list = 2  " Close error window automatically when there are no errors.
 let g:syntastic_enable_signs = 1  " Show sidebar signs.
+let g:syntastic_mode_map = { 'mode': 'passive' }
 set statusline+=%#warningmsg#  " Add Error ruler.
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -306,7 +306,6 @@ nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
 
 " Rooter {{{
 autocmd VimEnter * :Rooter
-let g:rooter_patterns = ['.tags', '.git/']
 "}}}
 "}}}
 
