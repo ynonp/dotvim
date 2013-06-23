@@ -131,13 +131,12 @@ set wildignore+=*.DS_STORE
 let mapleader=","  " Set <leader> key to comma.
 silent! call repeat#set("\<Plug>.", v:count)  " activate vim-repeat plugin.
 cnoremap help vert help
-imap jk <Esc>
-imap kj <Esc>
-" Window-change actions.
-" noremap <Up> <C-w>k
-" noremap <Down> <C-w>j
-" noremap <Left> <C-w>h
-" noremap <Right> <C-w>l
+inoremap jk <Esc>
+inoremap kj <Esc>
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
 "}}}
 
 " Searching {{{
@@ -254,7 +253,7 @@ let NERDTreeQuitOnOpen = 1  " Close tree when opening a file.
 let NERDTreeShowHidden = 1  " Show hidden files.
 let NERDTreeChDirMode = 1  " Set tree root to :pwd.
 let NERDTreeShowFiles = 1  " Show files (+ dirs) on startup.
-let NERDTreeIgnore=[ '.DS_Store', '.*.swp$', '\~$' ]  " Ignore these file patterns.
+let NERDTreeIgnore = [ '.DS_Store', '.*.swp$', '\~$' ]  " Ignore these file patterns.
 let NERDTreeWinPos = 'right'  " Open window on right side.
 noremap <Leader>e :NERDTreeToggle<CR>
 "}}}
@@ -329,6 +328,7 @@ autocmd FileType python setlocal linebreak nosmartindent  " nosmartindent for co
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 set wildignore+=*.pyc,*.pyo
 set wildignore+=*.egg,*.egg-info
+let NERDTreeIgnore += ['.*.pyc$', '*.pyc$']  " Don't display this in NERDTree.
 "}}}
 
 " Ruby {{{
