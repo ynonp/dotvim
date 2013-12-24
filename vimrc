@@ -13,11 +13,8 @@ set nocompatible  " Disable vi compatibility (more efficient, and besides - we'r
 set fileformats=unix,dos,mac  " Set file end-of-line priority.
 filetype off
 
-if has ("win32")
-    set runtimepath+=$HOME/vimfiles/bundle/vundle/
-else
-    set runtimepath+=$HOME/.vim/bundle/vundle/
-endif
+if has ("win32") | set runtimepath+=$HOME/vimfiles/bundle/vundle/
+else | set runtimepath+=$HOME/.vim/bundle/vundle/ | endif
 
 call vundle#rc()
 Bundle "gmarik/vundle"
@@ -28,12 +25,14 @@ Bundle "gmarik/vundle"
 Bundle "nanotech/jellybeans.vim"
 
 " Web {{{
+Bundle "othree/html5.vim"
 Bundle "pangloss/vim-javascript"
 Bundle "lepture/vim-jinja"
 Bundle "tpope/vim-liquid"
 "Bundle "lepture/vim-css"
 Bundle "cakebaker/scss-syntax.vim"
 Bundle "groenewege/vim-less"
+Bundle "wavded/vim-stylus"
 Bundle "matchit.zip"
 Bundle "ap/vim-css-color"
 "}}}
@@ -45,9 +44,6 @@ Bundle "python.vim--Vasiliev"
 " Markdown
 Bundle "tpope/vim-markdown"
 
-" Racket
-Bundle "wlangstroth/vim-racket"
-
 " Syntax
 Bundle "scrooloose/syntastic"
 Bundle "tomtom/tcomment_vim"
@@ -55,7 +51,7 @@ Bundle "tomtom/tcomment_vim"
 " Navigation {{{
 Bundle "majutsushi/tagbar"
 Bundle "wincent/Command-T"
-Bundle "Lokaltog/vim-powerline"
+Bundle "Lokaltog/powerline"
 Bundle "scrooloose/nerdtree"
 Bundle "Lokaltog/vim-easymotion"
 Bundle "godlygeek/tabular"
@@ -75,7 +71,6 @@ Bundle "xolox/vim-easytags"
 Bundle "tpope/vim-fugitive"
 Bundle "embear/vim-localvimrc"
 Bundle "Valloric/ListToggle"
-Bundle "airblade/vim-rooter"
 "Bundle "ryan-cf/netrw"
 
 filetype plugin indent on  " Automatically detect file types, and enable file-type-specific plugins and indentation.
@@ -117,6 +112,7 @@ set scrolloff=3  " Number of lines to keep above/below cursor when scrolling.
 " Status Line {{{
 set shortmess=atI  " Shortens messages in status line, truncates long messages, no intro (Uganda) message.
 set laststatus=2  " Always show status line.
+set noshowmode  " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set showcmd  " Display an incomplete command in status line.
 "}}}
 
@@ -132,11 +128,14 @@ let mapleader=","  " Set <leader> key to comma.
 silent! call repeat#set("\<Plug>.", v:count)  " activate vim-repeat plugin.
 cnoremap help vert help
 inoremap jk <Esc>
-inoremap kj <Esc>
+" inoremap kj <Esc>
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
+" move line-wise, not screen-size.
+nnoremap j gj
+nnoremap k gk
 "}}}
 
 " Searching {{{
@@ -162,7 +161,7 @@ set colorcolumn=+1  " Highlight one column AFTER 'textwidth'.
 " I set `formatoptions` differently for each file type (.c, .py, etc.)."
 autocmd FileType * set formatoptions=r,2
 set backspace=indent,eol,start  " Enable backspace key. Erase previously entered characters in insert mode.
-set number  " Show line numbers.
+set relativenumber  " Use relative line numbering.
 set showmatch  " Show matching brace on insertion or cursor over.
 set matchtime=3  " How many tenths of a second to wait before showing matching braces.
 if ! has("win32") | set listchars=tab:▸\ ,trail:¬,eol:« | endif  " Invisible characters.
@@ -222,10 +221,11 @@ let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_auto_loc_list = 2  " Close error window automatically when there are no errors.
 let g:syntastic_enable_signs = 1  " Show sidebar signs.
-let g:syntastic_mode_map = { 'mode': 'passive' }
-set statusline+=%#warningmsg#  " Add Error ruler.
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+let g:syntastic_mode_map = { 'passive_filetypes': ['html'] }
+"}}}
+
+" Powerline {{{
+set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 "}}}
 
 " Command-T {{{
@@ -235,11 +235,6 @@ let g:CommandTMatchWindowAtTop = 1  " Set window to top instead of bottom.
 nnoremap <silent> <Leader>g :CommandTTag<CR>
 nnoremap <silent> <Leader>f :CommandTRefreshMap<CR>
 let g:CommandTCancelMap = [ "<ESC>", "<C-c>" ]
-"}}}
-
-" Powerline {{{
-"let g:Powerline_symbols="unicode"
-let g:Powerline_stl_path_style = 'short'
 "}}}
 
 " Tagbar {{{
@@ -290,14 +285,11 @@ sunmap e
 " ListToggle {{{
 let g:lt_height = 10
 "}}}
+
 " Hard-mode {{{
 " Toggle key.
 nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
 " autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()  " Auto-activate hard-mode.
-"}}}
-
-" Rooter {{{
-autocmd VimEnter * :Rooter
 "}}}
 "}}}
 
@@ -308,14 +300,14 @@ autocmd FileType vim setlocal foldmethod=marker
 
 " Web {{{
 autocmd BufWinEnter *.html,*.htm setfiletype html
-autocmd BufWinEnter *.scss setfiletype scss
+autocmd BufWinEnter *.sass,*.scss setfiletype scss
 autocmd BufWinEnter *.less setfiletype less
 autocmd BufWinEnter *.json,*jshintrc setfiletype javascript
-autocmd FileType html setlocal filetype=jinja
-autocmd FileType css,scss,less set omnifunc=csscomplete#CompleteCSS
+" autocmd FileType html setlocal filetype=jinja
+autocmd FileType css,scss,less,stylus set omnifunc=csscomplete#CompleteCSS
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 "autocmd FileType html,jinja,liquid set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType html,jinja,liquid,css,scss,less setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd FileType html,jinja,liquid,css,scss,less,stylus setlocal tabstop=2 softtabstop=2 shiftwidth=2
 autocmd FileType html,jinja,liquid runtime! macros/matchit.vim
 "autocmd BufWritePost *.scss,*.sass !compass compile ../ <afile> --force
 "}}}
@@ -364,18 +356,6 @@ autocmd BufWinEnter *.md,*.markdown setfiletype markdown
 
 " Assembly {{{
 autocmd BufWinEnter *.s,*.bin setfiletype nasm
-"}}}
-
-" Racket {{{
-let g:easytags_languages = {
-            \   'racket': {
-            \     'cmd': g:easytags_cmd,
-            \       'args': ['--langmap=scheme:.rkt'],
-            \       'fileoutput_opt': '-f',
-            \       'stdout_opt': '-f-',
-            \       'recurse_flag': '-R'
-            \   }
-            \}
 "}}}
 
 " Bash/Shell {{{
