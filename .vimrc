@@ -27,14 +27,13 @@ Bundle "nanotech/jellybeans.vim"
 " Web {{{
 Bundle "othree/html5.vim"
 Bundle "pangloss/vim-javascript"
+Bundle "jelera/vim-javascript-syntax"
+Bundle "marijnh/tern_for_vim"
 Bundle "lepture/vim-jinja"
 Bundle "tpope/vim-liquid"
-"Bundle "lepture/vim-css"
-Bundle "cakebaker/scss-syntax.vim"
-Bundle "groenewege/vim-less"
 Bundle "wavded/vim-stylus"
 Bundle "matchit.zip"
-Bundle "ap/vim-css-color"
+" Bundle "ap/vim-css-color"
 "}}}
 
 " Python
@@ -47,20 +46,20 @@ Bundle "tpope/vim-markdown"
 
 " Syntax
 Bundle "scrooloose/syntastic"
-Bundle "tomtom/tcomment_vim"
+Bundle "tpope/vim-commentary"
 
 " Navigation {{{
 Bundle "majutsushi/tagbar"
 Bundle "kien/ctrlp.vim"
 Bundle "bling/vim-airline"
 Bundle "scrooloose/nerdtree"
-" Bundle "justinmk/vim-sneak"
+Bundle "mileszs/ack.vim"
+Bundle "justinmk/vim-sneak"
 Bundle "godlygeek/tabular"
 Bundle "tpope/vim-unimpaired"
 Bundle "tpope/vim-repeat"
 Bundle "IndexedSearch"
 Bundle "camelcasemotion"
-Bundle "wikitopian/hardmode"
 "}}}
 
 " Misc {{{
@@ -71,7 +70,6 @@ Bundle "xolox/vim-misc"
 Bundle "xolox/vim-easytags"
 Bundle "tpope/vim-fugitive"
 Bundle "airblade/vim-gitgutter"
-Bundle "embear/vim-localvimrc"
 Bundle "Valloric/ListToggle"
 Bundle "tpope/vim-sensible"
 
@@ -92,6 +90,11 @@ let g:jellybeans_overrides = {
         \ 'ctermfg': '196',
         \ 'ctermbg': '226',
         \ 'attr': 'standout'
+    \ },
+    \ 'Folded': {
+        \ 'ctermfg': '244',
+        \ 'gui': 'italic',
+        \ 'guifg': '888888',
     \ }
 \ }
 
@@ -101,11 +104,12 @@ colorscheme jellybeans
 
 " Misc. {{{
 set nostartofline
-set splitbelow splitright  " New windows are created to the bottom-right.
+set splitbelow splitright
 set clipboard+=unnamedplus,unnamed  " Enable OS clipboard integration.
-set hidden  " The current buffer can be put to the background without writing to disk.
-set title  " Show title in app title bar.
-set ttyfast  " Fast drawing.
+set hidden
+set title
+set lazyredraw
+set ttyfast
 "}}}
 
 " Status Line {{{
@@ -114,10 +118,7 @@ set noshowmode  " Hide the default mode text (e.g. -- INSERT -- below the status
 "}}}
 
 " Ignored files {{{
-set wildignore+=*.swp  " Vim
-            \ *.jpg,*.jpeg,*.png,*.gif,*.psd  " Ignore images
-            \ *.pdf  " Ignore PDF files
-            \ *.DS_STORE
+set wildignore+=*.swp,.git/,*.jpg,*.jpeg,*.png,*.gif,*.psd,*.pdf,*.DS_Store
 "}}}
 
 " Key mappings {{{
@@ -125,10 +126,10 @@ let mapleader=","  " Set <leader> key to comma.
 silent! call repeat#set("\<Plug>.", v:count)  " activate vim-repeat plugin.
 cabbrev vhelp vert help
 inoremap jk <Esc>
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+map <silent> <C-j> <C-W>j
+map <silent> <C-k> <C-W>k
+map <silent> <C-h> <C-W>h
+map <silent> <C-l> <C-W>l
 " move line-wise, not screen-size.
 nnoremap j gj
 nnoremap k gk
@@ -145,7 +146,7 @@ set wildmode=list:longest  " List options when hitting tab, and match longest co
 " Formatting & Text {{{
 set nowrap  " No line wrapping.
 set linebreak  " Wrap at word.
-set textwidth=80  " Desirable text width. Used for text auto-wrapping. 0 means no auto-wrapping.
+set textwidth=79  " Desirable text width. Used for text auto-wrapping. 0 means no auto-wrapping.
 set colorcolumn=+1  " Highlight one column AFTER 'textwidth'.
 " Enable auto-wrapping comments, comment leader auto-insertion
 " in <Insert> mode, auto-format paragraphs, keep last line indentation.
@@ -172,11 +173,11 @@ set smartindent
 "}}}
 
 " Folding {{{
-set foldenable  " Turn on folding.
-set foldmethod=syntax  " Fold on the marker.
-set foldlevel=0  " Fold everything when opening a file.
-set foldopen=block,hor,tag,percent,mark,quickfix  " Which movements open folds.
-""}}}
+set foldenable
+set foldmethod=syntax
+set foldlevel=0
+set foldopen=block,hor,tag,percent,mark,quickfix
+"}}}
 
 " Backup {{{
 set nobackup  " Disable file backup before file overwrite attempt.
@@ -205,10 +206,18 @@ let g:ycm_autoclose_preview_window_after_insertion = 1  " Close function signatu
 " let g:ycm_register_as_syntastic_checker = 0  " Disable YCM-Syntastic for C-family langauges.
 "}}}
 
+" Tern {{{
+let g:tern#command = ['tern', '--no-port-file']
+let g:tern_show_signature_in_pum = 1
+" let g:tern_show_argument_hints = 'on_move'
+"}}}
+
 " Syntastic {{{
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
+let g:syntastic_style_warning_symbol = '♫'
+let g:syntastic_style_error_symbol = '♪'
 let g:syntastic_auto_loc_list = 2  " Close error window automatically when there are no errors.
 let g:syntastic_enable_signs = 1  " Show sidebar signs.
 let g:syntastic_mode_map = { 'passive_filetypes': ['html'] }
@@ -219,27 +228,54 @@ let g:airline_left_sep=''
 let g:airline_right_sep=''
 "}}}
 
+" Sneak {{{
+highlight link SneakPluginTarget Visual
+
+nmap <leader>s <Plug>Sneak_s
+nmap <leader>S <Plug>Sneak_S
+xmap <leader>s <Plug>Sneak_s
+xmap <leader>S <Plug>Sneak_S
+omap <leader>s <Plug>Sneak_s
+omap <leader>S <Plug>Sneak_S
+
+nmap f <Plug>Sneak_f
+nmap F <Plug>Sneak_F
+xmap f <Plug>Sneak_f
+xmap F <Plug>Sneak_F
+omap f <Plug>Sneak_f
+omap F <Plug>Sneak_F
+
+nmap t <Plug>Sneak_t
+nmap T <Plug>Sneak_T
+xmap t <Plug>Sneak_t
+xmap T <Plug>Sneak_T
+omap t <Plug>Sneak_t
+omap T <Plug>Sneak_T
+"}}}
 
 " Tagbar {{{
 let g:tagbar_sort = 0
-nnoremap <silent> \ :TagbarToggle<CR>
-" Search tag list from current dir up till root.
+let g:tagbar_autofocus = 1
+let g:tagbar_compact = 1
+nnoremap <silent> <Leader>a :TagbarToggle<CR>
 "}}}
 
 " CtrlP {{{
 let g:ctrlp_map = '<Leader>p'
-map <Leader>b :CtrlPBuffer<CR>
-map <Leader>t :CtrlPTag<CR>
+noremap <silent> <Leader>b :CtrlPBuffer<CR>
+noremap <silent> <Leader>t :CtrlPTag<CR>
 "}}}
 
 " {{{ NERDTree
-let NERDTreeQuitOnOpen = 1  " Close tree when opening a file.
-let NERDTreeShowHidden = 1  " Show hidden files.
-let NERDTreeChDirMode = 1  " Set tree root to :pwd.
-let NERDTreeShowFiles = 1  " Show files (+ dirs) on startup.
-let NERDTreeIgnore = [ '.DS_Store', '.*.swp$', '\~$' ]  " Ignore these file patterns.
-let NERDTreeWinPos = 'right'  " Open window on right side.
-noremap <Leader>n :NERDTreeToggle<CR>
+let NERDChristmasTree = 1
+let NERDTreeShowHidden = 1
+let NERDTreeChDirMode = 1
+let NERDTreeShowFiles = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeWinPos = 'right'
+let NERDTreeIgnore = [ '.DS_Store', '.*.swp$', '\~$' ]
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+noremap <silent> <Leader>n :NERDTreeToggle<CR>
 "}}}
 
 " EasyTags {{{
@@ -249,17 +285,6 @@ let g:easytags_cmd = 'ctags'
 let g:easytags_dynamic_files = 1  " Search tag files.
 let g:easytags_updatetime_warn = 0  " Don't show updatetime annoying warning.
 let g:easytags_events = [ 'BufWritePost' ]  " Update on save only.
-"}}}
-
-" TComment {{{
-let g:tcommentMapLeader1 = '<Leader>c'
-" NERDCommenter-like behavior:
-noremap <Leader>cc :TCommentMaybeInline<CR>
-"}}}
-
-" Local .vimrc {{{
-let localvimrc_ask = 0  " Load .lvimrc without asking.
-let g:localvimrc_sandbox = 0  " No sandbox (less secure).
 "}}}
 
 " Camelcase motion {{{
@@ -275,30 +300,30 @@ sunmap e
 let g:lt_height = 10
 "}}}
 
-" Hard-mode {{{
-" Toggle key.
-nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
-" autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()  " Auto-activate hard-mode.
-"}}}
-"}}}
-
 " Language-specific {{{
 " Vim {{{
 autocmd FileType vim setlocal foldmethod=marker
 "}}}
 
-" Web {{{
-autocmd BufWinEnter *.html,*.htm setfiletype html
-autocmd BufWinEnter *.sass,*.scss setfiletype scss
-autocmd BufWinEnter *.less setfiletype less
-autocmd BufWinEnter *.json,*jshintrc setfiletype javascript
-" autocmd FileType html setlocal filetype=jinja
-autocmd FileType css,scss,less,stylus set omnifunc=csscomplete#CompleteCSS
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-"autocmd FileType html,jinja,liquid set omnifunc=htmlcomplete#CompleteTags
+" HTML & Templates {{{
+" autocmd BufWinEnter *.html,*.htm setfiletype jinja
+" autocmd FileType html,jinja,liquid set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType html,jinja,liquid,css,scss,less,stylus setlocal tabstop=2 softtabstop=2 shiftwidth=2
 autocmd FileType html,jinja,liquid runtime! macros/matchit.vim
-"autocmd BufWritePost *.scss,*.sass !compass compile ../ <afile> --force
+autocmd FileType jinja set commentstring={#\ %s\ #}
+"}}}
+
+" CSS {{{
+autocmd BufWinEnter *.sass,*.scss setfiletype scss
+autocmd BufWinEnter *.less setfiletype less
+autocmd FileType css,scss,less,stylus set omnifunc=csscomplete#CompleteCSS
+"}}}
+
+" Javascript {{{
+autocmd BufWinEnter *.json,.jshintrc,.tern-config,.tern-project setfiletype javascript
+" autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType javascript call JavaScriptFold()
+let g:tagbar_type_javascript = { 'ctagsbin' : 'jsctags' }
 "}}}
 
 " Python {{{
@@ -343,19 +368,7 @@ set wildignore+=*.class
 autocmd BufWinEnter *.md,*.markdown setfiletype markdown
 "}}}
 
-" Assembly {{{
-autocmd BufWinEnter *.s,*.bin setfiletype nasm
-"}}}
-
-" Bash/Shell {{{
-autocmd BufWinEnter *bashrc,*bash_prompt,*bash_profile,*aliases setfiletype sh
-"}}}
-
-" Git {{{
-autocmd BufWinEnter *gitconfig setfiletype gitconfig
-"}}}
-
-" SSH {{{
-autocmd BufWinEnter *sshconfig setfiletype sshconfig
+" LaTeX {{{
+autocmd FileType tex setlocal number norelativenumber
 "}}}
 "}}}
