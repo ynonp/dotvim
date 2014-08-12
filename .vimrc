@@ -10,8 +10,8 @@
 "}}}
 " Plugins {{{
 " Init Vundle {{{
-set nocompatible
 filetype off
+set nocompatible
 set runtimepath+=~/.vim/bundle/Vundle.vim/
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
@@ -38,39 +38,30 @@ Plugin 'wavded/vim-stylus'
 Plugin 'pangloss/vim-javascript'
 Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'marijnh/tern_for_vim'
-Plugin 'elzr/vim-json'
 "}}}
-" Python {{{
-Plugin 'hynek/vim-python-pep8-indent'
-Plugin 'hdima/python-syntax'
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'jmcantrell/vim-virtualenv'
+" Bbye
+Plugin 'moll/vim-bbye'
+command! -bang -complete=buffer -nargs=? BD Bdelete<bang> <args>
 "}}}
-" Go {{{
-Plugin 'fatih/vim-go'
-"}}}
-" Java {{{
-Plugin 'eclim', { 'pinned': 1 }
+" Plugin viewdoc
+Plugin 'powerman/vim-plugin-viewdoc'
 "}}}
 " Markdown {{{
 Plugin 'tpope/vim-markdown'
 "}}}
-"}}}
+" Buffergator
+" Plugin 'jeetsukumaran/vim-buffergator'
+" let g:buffergator_viewport_split_policy="B"
+" }}}
 " Everything else {{{
-Plugin 'rking/ag.vim'
-Plugin 'camelcasemotion'
+" Plugin 'camelcasemotion'
 Plugin 'kien/ctrlp.vim'
-Plugin 'd11wtq/ctrlp_bdelete.vim'
 Plugin 'IndexedSearch'
-Plugin 'jaxbot/github-issues.vim'
-Plugin 'Valloric/ListToggle'
 Plugin 'scrooloose/nerdtree'
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-commentary'
-Plugin 'junegunn/vim-easy-align'
-Plugin 'xolox/vim-easytags'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'xolox/vim-misc'
@@ -79,9 +70,22 @@ Plugin 'justinmk/vim-sneak'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-unimpaired'
-Plugin 'papanikge/vim-voogle'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'regedarek/ZoomWin'
+Plugin 'Raimondi/delimitMate'
+Plugin 'mileszs/ack.vim'
+Plugin 'zerowidth/vim-copy-as-rtf'
+Plugin 'tpope/vim-eunuch'
+Plugin 'PeterRincker/vim-argumentative'
+Plugin 'edkolev/tmuxline.vim'
+Plugin 'sjl/gundo.vim'
+Plugin 'tpope/vim-endwise'
+Plugin 'powerman/vim-plugin-AnsiEsc'
+
+
+"}}}
+
+" HTML Plugins
+Plugin 'ynonp/HTML-AutoCloseTag'
+Plugin 'hail2u/vim-css3-syntax'
 "}}}
 " Finish Init Vundle {{{
 call vundle#end()
@@ -90,13 +94,10 @@ filetype plugin indent on
 "}}}
 " Options {{{
 " Colors {{{
-set term=$TERM
-set t_Co=16
-set background=dark
-colorscheme solarized
+colo industry
 "}}}
 " Spaces {{{
-set expandtab tabstop=4 softtabstop=4 shiftwidth=4
+set expandtab tabstop=2 softtabstop=2 shiftwidth=2
 "}}}
 " Status Line {{{
 set shortmess=atI
@@ -112,23 +113,13 @@ set wildignore+=*.class
 let mapleader=","
 cabbrev vhelp vert help
 
-inoremap jk <Esc>
-
 nnoremap j gj
 nnoremap k gk
-
-nnoremap : ;
-vnoremap : ;
-nnoremap ; :
-vnoremap ; :
 
 nnoremap <silent> <C-j> <C-W>j
 nnoremap <silent> <C-k> <C-W>k
 nnoremap <silent> <C-h> <C-W>h
 nnoremap <silent> <C-l> <C-W>l
-
-nnoremap <c-]> g<c-]>
-vnoremap <c-]> g<c-]>
 
 " inoremap 1 !
 " inoremap 2 @
@@ -157,7 +148,6 @@ vnoremap <c-]> g<c-]>
 " Searching {{{
 set smartcase
 set ignorecase
-set gdefault
 set wildmode=list:longest
 if exists('&wildignorecase') | set wildignorecase | endif
 "}}}
@@ -165,8 +155,6 @@ if exists('&wildignorecase') | set wildignorecase | endif
 set nowrap
 set linebreak
 set textwidth=79
-call matchadd('ColorColumn', printf('\%%%dv', &textwidth+1), -1)
-set relativenumber
 set matchtime=3
 set nolist
 set nosmartindent
@@ -185,37 +173,9 @@ function! StripTrailingWhitespaces()
 endfunction
 command! StripTrailingWhitespaces call StripTrailingWhitespaces()
 "}}}
-" Folding {{{
-set foldenable
-set foldmethod=syntax
-set foldlevel=0
-set foldopen=block,hor,tag,percent,mark,quickfix
-
-function! FoldText() " {{{
-    let line = getline(v:foldstart)
-
-    let nucolwidth = &fdc + &number * &numberwidth
-    let windowwidth = winwidth(0) - nucolwidth - 3
-
-    " expand tabs into spaces
-    let onetab = strpart('          ', 0, &tabstop)
-    let line = substitute(line, '\t', onetab, 'g')
-
-    let line = strpart(line, 0, windowwidth - 2)
-    let fillcharcount = windowwidth - len(line)
-
-    return line . repeat(" ", fillcharcount)
-endfunction " }}}
-set foldtext=FoldText()
-"}}}
 " Backup {{{
 set nobackup
 set nowritebackup
-"}}}
-" Mouse {{{
-behave xterm
-set mouse-=a
-set mousehide
 "}}}
 " Bells {{{
 set novisualbell
@@ -223,92 +183,34 @@ set novisualbell
 " Misc. {{{
 set nostartofline
 set splitbelow splitright
-set clipboard+=unnamed
 set hidden
 set title
-" set lazyredraw
-set ttyfast
 let g:is_bash=1
 "}}}
 "}}}
 " Plugin configurations {{{
-" Ag {{{
-let g:agprg = "ag --column --smart-case --follow"
-let g:aghighlight = 1
-let g:ag_mapping_message = 0
-cabbrev Ag Ag!
-"}}}
 " Airline {{{
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 "}}}
-" Camelcase motion {{{
-map <silent> w <Plug>CamelCaseMotion_w
-map <silent> b <Plug>CamelCaseMotion_b
-map <silent> e <Plug>CamelCaseMotion_e
-sunmap w
-sunmap b
-sunmap e
-"}}}
 " CtrlP {{{
 let g:ctrlp_working_path_mode = 'raw'
 let g:ctrlp_lazy_update = 0
-let g:ctrlp_map = '<Leader>p'
-noremap <silent> <Leader>b :CtrlPBuffer<CR>
-noremap <silent> <Leader>t :CtrlPTag<CR>
+noremap <silent> <leader>b :CtrlPBuffer<CR>
+noremap <silent> <leader>t :CtrlPTag<CR>
 let g:ctrlp_prompt_mappings = {
             \ 'PrtSelectMove("j")': ['<c-n>'],
             \ 'PrtSelectMove("k")': ['<c-p>'],
             \ 'PrtHistory(-1)':  ['<c-j>'],
             \ 'PrtHistory(1)': ['<c-k>'],
             \ }
-call ctrlp_bdelete#init()
-"}}}
-" EasyAlign {{{
-vmap <Leader>a <Plug>(EasyAlign)
-nmap <Leader>a <Plug>(EasyAlign)
-"}}}
-" EasyTags {{{
-set tags=./tags,tags
-let g:easytags_file = '~/.tags'
-let g:easytags_cmd = 'ctags'
-let g:easytags_dynamic_files = 1
-let g:easytags_updatetime_warn = 0
-let g:easytags_events = ['BufReadPost', 'BufWritePost']
-
-let g:easytags_languages = {
-            \   'javascript': {
-            \       'cmd': 'jsctags',
-            \       'args': [],
-            \       'fileoutput_opt': '-f',
-            \       'stdout_opt': '-f-',
-            \       'recurse_flag': '-R'
-            \   }
-            \}
-"}}}
-" Eclim {{{
-set runtimepath+=$HOME/.vim/bundle/eclim/
-let g:EclimCompletionMethod = 'omnifunc'
-let g:EclimWarningHighlight = 'Todo'
-let g:EclimLoclistSignText  = '✗'
-"}}}
-" Github-Issues {
-source $HOME/.vim/github_access_token.vim
-"}}}
-" Go {{{
-let g:go_highlight_trailing_whitespace_error = 0
-let g:go_fmt_fail_silently = 1
-"}}}
-" ListToggle {{{
-let g:lt_height = 10
 "}}}
 " NERDTree {{{
-let NERDChristmasTree = 1
 let NERDTreeShowHidden = 1
 let NERDTreeChDirMode = 1
 let NERDTreeShowFiles = 1
 let NERDTreeMinimalUI = 1
-let NERDTreeWinPos = 'right'
+let NERDTreeWinPos = 'left'
 let NERDTreeIgnore = [
             \ '.DS_Store', '\.swp$', '\~$',
             \ '\.jpg$', '\.jpeg$', '\.png$', '\.gif$', '\.pdf$',
@@ -317,26 +219,13 @@ let NERDTreeIgnore = [
             \ '\.pyc$', '\.pyo$'
             \ ]
 
-" augroup NERD-Tree
-"     autocmd!
-"     autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-" augroup END
-
 noremap <silent> <Leader>n :NERDTreeToggle<CR>
-"}}}
-" Python {{{
-let python_slow_sync = 1
-let python_highlight_indent_errors = 0
-let python_highlight_space_errors = 0
-let python_highlight_all = 1
 "}}}
 " Repeat {{{
 silent! call repeat#set("\<Plug>.", v:count)
 "}}}
 " Sneak {{{
 highlight link SneakPluginTarget Visual
-
-map : <Plug>SneakNext
 
 nmap <leader>s <Plug>Sneak_s
 nmap <leader>S <Plug>Sneak_S
@@ -370,7 +259,6 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_auto_loc_list = 2
 
 let g:syntastic_enable_signs = 1
-let g:syntastic_error_symbol = g:EclimLoclistSignText
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_style_warning_symbol = '♫'
 let g:syntastic_style_error_symbol = '♪'
@@ -417,14 +305,6 @@ cabbrev BundleList! PluginList!
 cabbrev BundleSearch PluginSearch
 cabbrev BundleSearch! PluginSearch!
 "}}}
-" YouCompleteMe - YCM {{{
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_autoclose_preview_window_after_insertion = 1
-" let g:ycm_min_num_of_chars_for_completion = 4
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_add_preview_to_completeopt = 1
-"}}}
 " Autocmds {{{
 " BufWinEnter {{{
 augroup Buf-Win-Enter
@@ -439,15 +319,98 @@ augroup END
 " FileType {{{
 augroup File-Type
     autocmd!
-    autocmd FileType vim setlocal foldmethod=marker
     autocmd FileType qf setlocal wrap
     autocmd FileType gitcommit setlocal textwidth=72
     autocmd FileType html,xml,jinja,liquid,css,scss,less,stylus,ruby setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd FileType html,xml,jinja,liquid runtime! macros/matchit.vim
     autocmd FileType jinja setlocal commentstring={#\ %s\ #}
-    autocmd FileType xdefaults setlocal commentstring=!\ %s
     autocmd FileType scss,less,stylus setlocal omnifunc=csscomplete#CompleteCSS
     autocmd FileType tex setlocal number norelativenumber
 augroup END
 "}}}
 "}}}
+
+" UltiSnip {{{
+" Track the engine.
+    filetype off
+    Plugin 'SirVer/ultisnips'
+
+    " Snippets are separated from the engine. Add this if you want them:
+    Plugin 'honza/vim-snippets'
+
+    " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+    " let g:UltiSnipsExpandTrigger="<tab>"
+    " let g:UltiSnipsJumpForwardTrigger="<c-b>"
+    " let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+    " If you want :UltiSnipsEdit to split your window.
+    let g:UltiSnipsEditSplit="vertical"
+" }}}
+
+" Vim Template {{{
+  Plugin 'ynonp/vim-template'
+" }}}
+
+" Vim Tmuxify {{{
+    Plugin 'mhinz/vim-tmuxify'
+    nnoremap <leader>mx :TxKill<cr>
+    au BufLeave,VimLeave * if exists('b:pane_id') | TxKill | endif
+    let g:tmuxify_custom_command = 'tmux split-window -d -h -p 30 "PS1=$\\  bash"'
+    let g:tmuxify_run = {
+        \ 'sh': 'echo; bash %; echo',
+        \ 'perl' : 'echo; perl %; echo',
+        \}
+" }}}
+
+" Vim rails {{{
+    Plugin 'tpope/vim-rails'
+    let g:rubycomplete_buffer_loading = 1
+    let g:rubycomplete_classes_in_global = 1
+    let g:rubycomplete_rails = 1
+    let g:rubycomplete_use_bundler = 1
+
+
+" }}}
+
+
+" local vimrc options
+set number
+syntax enable
+filetype plugin indent on
+
+" insert mode movement key mapping
+inoremap <C-e> <C-o>$
+inoremap <C-a> <C-o>0
+
+noremap OA <up>
+noremap OB <down>
+noremap OC <right>
+noremap OD <left>
+
+nnoremap <leader>u :GundoToggle<cr>
+
+nnoremap <leader>C ct;
+nnoremap <leader>D dt;
+
+let g:ctrlp_root_markers = [".vimprj"]
+set rtp+=.vimprj
+
+" abbrevations
+cabbr <expr> %% expand('%:p:h')
+
+" *******************
+" * Other Settings
+"
+" autocomplete
+set completeopt=longest,menuone
+
+" Visual Block selection
+set virtualedit=block
+
+set hlsearch
+
+let g:airline_theme="ubaryd"
+
+set ttyfast
+set ttymouse=xterm2
+set mouse=a
