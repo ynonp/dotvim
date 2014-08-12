@@ -1,0 +1,46 @@
+snippet jquery
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+endsnippet
+
+snippet jqm
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
+endsnippet
+
+snippet jqm-page
+<div data-role="page" id="${1:home}">
+	<div data-role="header">
+		<h1>${2:Home}</h1>
+	</div>
+</div>
+endsnippet
+
+snippet jqm-tabs
+<div data-role="tabs" id="${1:tabs}">
+	<div data-role="navbar">
+		<ul>
+			<li><a href="#one" data-ajax="false">one</a></li>
+			<li><a href="#two" data-ajax="false">two</a></li>
+			<li><a href="external.html" data-ajax="false">external</a></li>
+		</ul>
+	</div>
+	<div id="one" class="ui-body-d ui-content">
+		<h1>First tab contents</h1>
+	</div>
+	<div id="two">
+		<ul data-role="listview" data-inset="true">
+			<li><a href="#">Acura</a></li>
+			<li><a href="#">Audi</a></li>
+			<li><a href="#">BMW</a></li>
+			<li><a href="#">Cadillac</a></li>
+			<li><a href="#">Ferrari</a></li>
+		</ul>
+	</div>
+</div>
+endsnippet
+
+snippet handlebars
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
+endsnippet
+
